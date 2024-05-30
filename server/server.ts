@@ -9,15 +9,15 @@ const server = express()
 server.use(cors())
 server.use(express.json())
 
-server.get('/',(_,res)=>{
+server.get('/', (_, res) => {
   res.send('server')
 })
-server.get('/app',(_,res)=>{
-  main().then((response)=>res.send(response)).catch((err)=>res.status(500).send(err.message))
+server.get('/app', (_, res) => {
+  main()
+    .then((response) => res.send(response))
+    .catch((err) => res.status(500).send(err.message))
 })
 
-server.use('/uploadPath',uploadPath)
-
-
+server.use('/uploadPath', uploadPath)
 
 export default server

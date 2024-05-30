@@ -1,60 +1,52 @@
-import fs from "node:fs/promises";
+import fs from 'node:fs/promises'
 
-import {
-  Document,
-  VectorStoreIndex,
-} from "llamaindex";
+import { Document, VectorStoreIndex } from 'llamaindex'
 
 async function main() {
+  const path = './server/temp/content.txt'
 
-  const path = "./server/temp/content.txt";
-
-  const essay = await fs.readFile(path, "utf-8");
+  const essay = await fs.readFile(path, 'utf-8')
 
   // Create Document object with essay
-  const document = new Document({ text: essay, id_: path });
-
+  const document = new Document({ text: essay, id_: path })
 
   // Split text and create embeddings. Store them in a VectorStoreIndex
-  const index = await VectorStoreIndex.fromDocuments([document]);
+  const index = await VectorStoreIndex.fromDocuments([document])
 
-const structuredQuery = {
-  summary: "Provide a high-level summary of this CV.",
-  profile: "Extract the profile section.",
-  skills: "List the skills mentioned in the CV without prefix numbers.",
-  education: "List the educational institutions mentioned in the CV without prefix numbers or dash,seperate with commas",
-  
-experience: "List the work experiences mentioned in the CV without prefix numbers or dash, seperate with commas instead of newline"
-};
+  const structuredQuery = {
+    summary: 'Provide a high-level summary of this CV.',
+    profile: 'Extract the profile section.',
+    skills: 'List the skills mentioned in the CV without prefix numbers.',
+    education:
+      'List the educational institutions mentioned in the CV without prefix numbers or dash,seperate with commas',
 
-
-async function queryStructuredData(index, structuredQuery) {
-  const queryEngine = index.asQueryEngine()
-  const results = {}
-
-  for (const key in structuredQuery) {
-    const query = structuredQuery[key]
-    const { response } = await queryEngine.query({ query })
-    results[key] = response
+    experience:
+      'List the work experiences mentioned in the CV without prefix numbers or dash, seperate with commas instead of newline',
   }
-  return results;
-}
 
+  async function queryStructuredData(index, structuredQuery) {
+    const queryEngine = index.asQueryEngine()
+    const results = {}
 
-const extractedData = await queryStructuredData(index, structuredQuery)
+    for (const key in structuredQuery) {
+      const query = structuredQuery[key]
+      const { response } = await queryEngine.query({ query })
+      results[key] = response
+    }
+    return results
+  }
 
-const listSkills =['skills','education','experience']
+  const extractedData = await queryStructuredData(index, structuredQuery)
 
-for (const key of listSkills) {
-  extractedData[key] = extractedData[key].split(',')
-}
+  const listSkills = ['skills', 'education', 'experience']
 
-console.log(extractedData)
+  for (const key of listSkills) {
+    extractedData[key] = extractedData[key].split(',')
+  }
 
-return extractedData
+  console.log(extractedData)
 
+  return extractedData
 }
 
 export default main
-
-
