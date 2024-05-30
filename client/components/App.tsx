@@ -2,18 +2,24 @@ import { FormEvent, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { uploadFilePath } from '../api/api'
 
-import { Badge, Box, Button, Container, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Container, Stack } from '@chakra-ui/react'
+import InputField from './InputField'
+
+type form = { list: string[]; extract: string[]; generate: string[] }
 
 function App() {
   const [file, setFile] = useState<File | undefined>()
   const [cv, setCV] = useState()
-  const [list, setList] = useState([])
-  const [defaultList, setDefaultList] = useState([
-    'skills',
-    'education',
-    'experience',
-  ])
-  const [tempList, setTempList] = useState<string[]>([])
+
+  const [listAttributes, setListAttributes] = useState<string[]>([])
+  const [extractAttributes, setExtractAttributes] = useState<string[]>([])
+  const [generateAttributes, setgenerateAttributes] = useState<string[]>([])
+
+  const [form, setForm] = useState<form>({
+    list: [],
+    extract: [],
+    generate: [],
+  })
 
   const supabase = createClient(
     String(import.meta.env.VITE_STORAGE_URL),
@@ -44,14 +50,13 @@ function App() {
       setCV(cvData)
     }
   }
-  function addBadge(listItem: string) {
-    setTempList((prev) => [...prev, listItem])
-    setDefaultList((prev) => prev.filter((item) => item !== listItem))
-  }
 
-  function removeBadge(listItem: string) {
-    setDefaultList((prev) => [...prev, listItem])
-    setTempList((prev) => prev.filter((item) => item !== listItem))
+  function formSubmitHandler() {
+    setForm({
+      list: listAttributes,
+      extract: extractAttributes,
+      generate: generateAttributes,
+    })
   }
 
   return (
@@ -59,45 +64,37 @@ function App() {
       <Container maxW='lg'>
         <Box maxW='lg'>
           <Box>
-            input
             <Stack>
-              <Box>
-                <Text>List</Text>
-                <Stack direction={'row'} padding={2}>
-                  {defaultList.map((listItem) => (
-                    <Button key={listItem} onClick={() => addBadge(listItem)}>
-                      {listItem}
-                    </Button>
-                  ))}
-                </Stack>
-                <Box
-                  borderWidth='4px'
-                  borderRadius='lg'
-                  minHeight={50}
-                  maxHeight={100}
-                >
-                  {tempList &&
-                    tempList.map((item) => (
-                      <Badge
-                        margin={1}
-                        key={item}
-                        cursor={'pointer'}
-                        onClick={() => removeBadge(item)}
-                      >
-                        {item}
-                      </Badge>
-                    ))}
-                </Box>
-              </Box>
-              <Box>
-                <Text>extract</Text>
-                <Stack></Stack>
-              </Box>
-              <Box>
-                <Text>Generate</Text>
-                <Stack></Stack>
-              </Box>
+              <InputField
+                {...{
+                  title: 'List',
+                  description: 'add to get a list of these attributes',
+                  attributes: ['skills', 'education', 'experience'],
+
+                  setAttributes: setListAttributes,
+                }}
+              />
+              <InputField
+                {...{
+                  title: 'Extract',
+                  description: 'add to extract entire attribute section',
+                  attributes: ['profile', 'experience'],
+
+                  setAttributes: setExtractAttributes,
+                }}
+              />
+              <InputField
+                {...{
+                  title: 'Generate',
+                  description: 'add attributes to generate summaries',
+                  attributes: ['skills', 'education', 'experience'],
+
+                  setAttributes: setgenerateAttributes,
+                }}
+              />
             </Stack>
+            <Button onClick={formSubmitHandler}>submit</Button>
+            <Button onClick={() => console.log(form)}>check</Button>
           </Box>
           <Box>
             file
