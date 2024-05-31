@@ -1,25 +1,47 @@
 import { FormEvent, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { uploadFilePath } from '../api/api'
+import { uploadFilePath, uploadQuery } from '../api/api'
 
-import { Box, Button, Container, Stack } from '@chakra-ui/react'
+import { Box, Button, Container, Stack, Heading, Text } from '@chakra-ui/react'
+
 import InputField from './InputField'
-
-type form = { list: string[]; extract: string[]; generate: string[] }
+import { QueryForm } from '../models/models'
 
 function App() {
   const [file, setFile] = useState<File | undefined>()
   const [cv, setCV] = useState()
+  const [selectedAttributes, setSelectedAttributes] = useState(false)
 
   const [listAttributes, setListAttributes] = useState<string[]>([])
   const [extractAttributes, setExtractAttributes] = useState<string[]>([])
   const [generateAttributes, setgenerateAttributes] = useState<string[]>([])
 
-  const [form, setForm] = useState<form>({
+  const [form, setForm] = useState<QueryForm>({
     list: [],
     extract: [],
     generate: [],
   })
+
+  const defaultAttribute = [
+    {
+      title: 'List',
+      description: 'add to get a list of these attributes',
+      attributes: ['skills', 'education', 'experience'],
+      setAttributes: setListAttributes,
+    },
+    {
+      title: 'Extract',
+      description: 'add to extract entire attribute section',
+      attributes: ['profile', 'experience'],
+      setAttributes: setExtractAttributes,
+    },
+    {
+      title: 'Generate',
+      description: 'add attributes to generate summaries',
+      attributes: ['skills', 'education', 'experience'],
+      setAttributes: setgenerateAttributes,
+    },
+  ]
 
   const supabase = createClient(
     String(import.meta.env.VITE_STORAGE_URL),
@@ -51,12 +73,17 @@ function App() {
     }
   }
 
-  function formSubmitHandler() {
+  function formPreviewHandler() {
     setForm({
       list: listAttributes,
       extract: extractAttributes,
       generate: generateAttributes,
     })
+    setSelectedAttributes(true)
+  }
+
+  function submitQuery() {
+    uploadQuery(form).then().catch()
   }
 
   return (
@@ -64,37 +91,42 @@ function App() {
       <Container maxW='lg'>
         <Box maxW='lg'>
           <Box>
-            <Stack>
-              <InputField
-                {...{
-                  title: 'List',
-                  description: 'add to get a list of these attributes',
-                  attributes: ['skills', 'education', 'experience'],
+            {!selectedAttributes && (
+              <>
+                <Stack>
+                  {defaultAttribute.map(
+                    ({ title, description, attributes, setAttributes }, i) => (
+                      <InputField
+                        key={i}
+                        {...{
+                          title,
+                          description,
+                          attributes,
+                          setAttributes,
+                        }}
+                      />
+                    )
+                  )}
+                </Stack>
+                <Button onClick={formPreviewHandler}>preview query</Button>
+              </>
+            )}
 
-                  setAttributes: setListAttributes,
-                }}
-              />
-              <InputField
-                {...{
-                  title: 'Extract',
-                  description: 'add to extract entire attribute section',
-                  attributes: ['profile', 'experience'],
+            {selectedAttributes && (
+              <Box>
+                <Heading>Preview Query</Heading>
+                {Object.keys(form).map((attribute) => (
+                  <Box>
+                    <Heading key={attribute}>{attribute}</Heading>
 
-                  setAttributes: setExtractAttributes,
-                }}
-              />
-              <InputField
-                {...{
-                  title: 'Generate',
-                  description: 'add attributes to generate summaries',
-                  attributes: ['skills', 'education', 'experience'],
-
-                  setAttributes: setgenerateAttributes,
-                }}
-              />
-            </Stack>
-            <Button onClick={formSubmitHandler}>submit</Button>
-            <Button onClick={() => console.log(form)}>check</Button>
+                    {form[attribute].map((attr, i) => (
+                      <Text key={i}>{attr}</Text>
+                    ))}
+                  </Box>
+                ))}
+                <Button onClick={submitQuery}>confirm query</Button>
+              </Box>
+            )}
           </Box>
           <Box>
             file
