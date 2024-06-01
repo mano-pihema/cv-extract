@@ -1,6 +1,6 @@
 import express from 'express'
-import main from './example'
 import uploadPath from './routes/uploadPath'
+import queryForm from './routes/queryForm'
 
 import cors from 'cors'
 
@@ -12,12 +12,8 @@ server.use(express.json())
 server.get('/', (_, res) => {
   res.send('server')
 })
-server.get('/app', (_, res) => {
-  main()
-    .then((response) => res.send(response))
-    .catch((err) => res.status(500).send(err.message))
-})
 
 server.use('/uploadPath', uploadPath)
+server.use('/queryForm', queryForm)
 
 export default server

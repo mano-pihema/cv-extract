@@ -11,6 +11,7 @@ function App() {
   const [file, setFile] = useState<File | undefined>()
   const [cv, setCV] = useState()
   const [selectedAttributes, setSelectedAttributes] = useState(false)
+  const [querySchema, setQuerySchema] = useState()
 
   const [listAttributes, setListAttributes] = useState<string[]>([])
   const [extractAttributes, setExtractAttributes] = useState<string[]>([])
@@ -56,6 +57,8 @@ function App() {
   async function submitHandler(event: FormEvent<HTMLElement>) {
     event.preventDefault()
 
+    console.log('querySchema', querySchema)
+
     if (!file) {
       console.log('no file')
       return
@@ -68,7 +71,7 @@ function App() {
       console.error('Error at upload front func', error)
     } else {
       console.log('File uploaded successfully', data)
-      const cvData = await uploadFilePath(data.path)
+      const cvData = await uploadFilePath(data.path, querySchema)
       setCV(cvData)
     }
   }
@@ -83,7 +86,9 @@ function App() {
   }
 
   function submitQuery() {
-    uploadQuery(form).then().catch()
+    uploadQuery(form)
+      .then((response) => setQuerySchema(response))
+      .catch((err) => console.error(err))
   }
 
   return (

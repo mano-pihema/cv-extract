@@ -6,12 +6,12 @@ import main from '../example.ts'
 const router = express.Router()
 
 router.post('/', async (req, res) => {
-  const { path } = req.body
+  const { path, schema } = req.body
 
   try {
     await downloadPdf(path)
     await parsePDF()
-    const cvExtract = await main()
+    const cvExtract = await main(schema)
     res.send(cvExtract)
   } catch (error) {
     console.error(error)

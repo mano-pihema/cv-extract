@@ -1,0 +1,90 @@
+MANO PIHEMA
+021 08488442 | m.raankin@gmail.com | mano-pihema-portfolio.vercel.app
+PROFILE
+ Kia Ora I am Mano, and I’m looking for full stack developer roles. Having recently finished an
+internship I can say I am passionate about working in tech. Whether it's diving into new
+languages or frameworks,  I'm always eager to expand my skill set. I’m a quick learner and enjoy
+applying new knowledge to solve challenges. Having great interpersonal skills I am able to
+contribute collaboratively and present ideas or solutions in a team.
+EXPERIENCE
+Trade Me
+Nov 13/23 - Feb 16/24
+FULL STACK DEVELOPER INTERN
+During my 3-month internship at Trade Me, I integrated into a jobs team within Trade Me
+Classifieds, actively engaging in agile practices such as daily stand-ups, sprint retrospectives, and
+refinements. I assumed the role of sprint facilitator for one sprint, leading daily stand-ups,
+refinements and retrospectives. As a full-stack intern, I worked with Angular, .NET, and SQL
+databases, implementing changes such as creating new API endpoints, updating and creating
+stored procedures, and updating the frontend to use this new data. 
+In one of my first tickets I took ownership of a project to develop a call-to-action (CTA) for the
+Trade Me Jobs homepage, incorporating conditional rendering and responsive design. Beyond
+technical tasks, I gained valuable exposure to the software development life cycle within a team
+setting, participating in feature development, bug fixes, code reviews, unit tests and platform
+maintenance.
+Dev Academy Aotearoa
+Apr 11/22 - Jul 29/22  
+STUDENT
+Dev Academy is a 15 week full time developer bootcamp that trains you to be job ready. During
+this bootcamp, we went from basic html web pages then up to full stack web applications built
+using React, Express.js, Node.js and SQLite3. The bootcamp not only cultivates technical skills,
+but also soft skills. Specifically how to work in teams and to communicate effectively and
+collaboratively with an agile workflow. 
+Additional skills and experience include:
+Deploying code to production, and monitoring it post release with tools such as Sentry and
+New Relic
+Automated unit and UI tests
+A/B flag creation and implementation
+Receiving code reviews
+Using source control following industry best practices
+Utilizing Docker to run development environments locally
+Terraform infrastructure to enhance development pipelines
+Using and debugging Google Analytics
+----------------Page (0) Break----------------
+TECHNICAL SKILLS
+Designing API endpoints to be used in large-scale services
+Developing multiple API endpoints, all the way through to the database layer
+Backend unit testing with Moq and Nunit
+Using Postman to quickly test and debug APIs
+.NET
+EDUCATION
+Web Development Bootcamp at Dev Academy 2022
+Bachelor of Fine Arts(Hons) at Auckland University 2013-2016 
+SOFT SKILLS
+Thank you for reading my CV! References available on request
+Handling observable data with Rxjs, following best practices
+Designed components following SOLID design principles
+Unit testing for Angular components with Jest and marbles
+Applying NgRx to create Redux store patterns to handle API calls and manage state,
+implementing patterns such as actions, effects, reducers, facades, etc
+Angular
+Creating new and updating existing stored procedures 
+Extending tables to contain additional column without affecting production on release
+Following robust deployment patterns to ensure a safe database deployment
+SQL
+ A large portion of the 800 approximate hours coding during the Dev Academy bootcamp
+was spent learning Javascript to creating full stack web applications.
+Trade Me uses Typescript with their Angular projects so I was heavily involved with it there,
+following object oriented programming patterns to create clean and reusable code.
+Javascript /Typescript
+During the bootcamp, we learned a range of React tools such as hooks, routing, and event
+handling. Initially, we managed local state using React's built-in capabilities. Subsequently,
+we transitioned to global state management by implementing Redux store patterns with
+Redux Toolkit
+React/Redux toolkit
+Starting my internship at Trade me I had no experience with Angular, I jumped into the
+framework through hands-on learning and study. This experience showcased my ability to
+adapt and learn new technologies quickly but also underscored my proactive approach to
+self-improvement. 
+Adaptability
+During my Internship I participated in daily standups, retros and other team rituals which
+solidified my ability to communicate concisely yet effectively. This requires effective
+listening; while pairing I consistently noted down key learning points. This ensured my
+follow up questions were relevant and productive, keeping everyone on the same page. A
+highlight was presenting a slide for my team on an all company call. This experience further
+developed my communication abilities and confidence. 
+Communication
+In my role as an intern I sought guidance and collaborated with developers on my team,
+engaging in numerous conversations to brainstorm solutions, share knowledge, and refine
+our approaches to technical problems.
+Collaboration
+----------------Page (1) Break----------------
