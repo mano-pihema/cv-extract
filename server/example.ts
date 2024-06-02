@@ -13,16 +13,6 @@ async function main(schema) {
   // Split text and create embeddings. Store them in a VectorStoreIndex
   const index = await VectorStoreIndex.fromDocuments([document])
 
-  // const structuredQuery = {
-  //   summary: 'Provide a high-level summary of this CV.',
-  //   profile: 'Extract the profile section.',
-  //   skills: 'List the skills mentioned in the CV without prefix numbers.',
-  //   education:
-  //     'List the educational institutions mentioned in the CV without prefix numbers or dash,seperate with commas',
-
-  //   experience:
-  //     'List the work experiences mentioned in the CV without prefix numbers or dash, seperate with commas instead of newline',
-  // }
   const structuredQuery = schema
 
   async function queryStructuredData(index, structuredQuery) {
@@ -41,7 +31,7 @@ async function main(schema) {
 
   for (const key in extractedData) {
     if (Object.keys(extractedData).some((el) => el.startsWith('list'))) {
-      extractedData[key] = extractedData[key].split(',')
+      extractedData[key] = extractedData[key].split(',,')
     }
   }
 

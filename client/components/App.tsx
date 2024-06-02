@@ -2,7 +2,20 @@ import { FormEvent, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { uploadFilePath, uploadQuery } from '../api/api'
 
-import { Box, Button, Container, Stack, Heading, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Heading,
+  Text,
+  Collapse,
+  useDisclosure,
+  Input,
+  Fade,
+  IconButton,
+} from '@chakra-ui/react'
+import { CopyIcon } from '@chakra-ui/icons'
 
 import InputField from './InputField'
 import { QueryForm } from '../models/models'
@@ -12,6 +25,9 @@ function App() {
   const [cv, setCV] = useState()
   const [selectedAttributes, setSelectedAttributes] = useState(false)
   const [querySchema, setQuerySchema] = useState()
+
+  const { isOpen, onToggle } = useDisclosure()
+  const [hideUpload, setHideUpload] = useState(true)
 
   const [listAttributes, setListAttributes] = useState<string[]>([])
   const [extractAttributes, setExtractAttributes] = useState<string[]>([])
@@ -56,14 +72,10 @@ function App() {
 
   async function submitHandler(event: FormEvent<HTMLElement>) {
     event.preventDefault()
-
-    console.log('querySchema', querySchema)
-
     if (!file) {
       console.log('no file')
       return
     }
-
     const { data, error } = await supabase.storage
       .from('cv-bucket')
       .upload(`cv/${Date.now()}${file.name}`, file)
@@ -74,6 +86,7 @@ function App() {
       const cvData = await uploadFilePath(data.path, querySchema)
       setCV(cvData)
     }
+    setHideUpload(false)
   }
 
   function formPreviewHandler() {
@@ -82,10 +95,12 @@ function App() {
       extract: extractAttributes,
       generate: generateAttributes,
     })
+
     setSelectedAttributes(true)
   }
 
   function submitQuery() {
+    onToggle()
     uploadQuery(form)
       .then((response) => setQuerySchema(response))
       .catch((err) => console.error(err))
@@ -95,65 +110,124 @@ function App() {
     <>
       <Container maxW='lg'>
         <Box maxW='lg'>
-          <Box>
-            {!selectedAttributes && (
-              <>
-                <Stack>
-                  {defaultAttribute.map(
-                    ({ title, description, attributes, setAttributes }, i) => (
-                      <InputField
-                        key={i}
-                        {...{
-                          title,
-                          description,
-                          attributes,
-                          setAttributes,
-                        }}
-                      />
-                    )
-                  )}
-                </Stack>
-                <Button onClick={formPreviewHandler}>preview query</Button>
-              </>
-            )}
+          <Collapse in={!isOpen}>
+            <Box>
+              {
+                <>
+                  <Collapse in={!selectedAttributes}>
+                    <Stack>
+                      {defaultAttribute.map(
+                        (
+                          { title, description, attributes, setAttributes },
+                          i
+                        ) => (
+                          <InputField
+                            key={i}
+                            {...{
+                              title,
+                              description,
+                              attributes,
+                              setAttributes,
+                            }}
+                          />
+                        )
+                      )}
+                    </Stack>
 
-            {selectedAttributes && (
-              <Box>
-                <Heading>Preview Query</Heading>
-                {Object.keys(form).map((attribute) => (
-                  <Box>
-                    <Heading key={attribute}>{attribute}</Heading>
+                    <Button onClick={formPreviewHandler}>preview query</Button>
+                  </Collapse>
+                </>
+              }
 
-                    {form[attribute].map((attr, i) => (
-                      <Text key={i}>{attr}</Text>
-                    ))}
-                  </Box>
-                ))}
-                <Button onClick={submitQuery}>confirm query</Button>
-              </Box>
-            )}
-          </Box>
+              {selectedAttributes && (
+                <Box>
+                  <Heading>Preview Query</Heading>
+                  {Object.keys(form).map((attribute) => (
+                    <Box>
+                      <Heading key={attribute}>{attribute}</Heading>
+
+                      {form[attribute].map((attr, i) => (
+                        <Text key={i}>{attr}</Text>
+                      ))}
+                    </Box>
+                  ))}
+                  <Button onClick={submitQuery}>confirm query</Button>
+                </Box>
+              )}
+            </Box>
+          </Collapse>
+
+          {hideUpload && (
+            <Collapse in={isOpen}>
+              <Heading>Upload</Heading>
+              <Text>choose a file </Text>
+              <Stack direction='row'>
+                <Input
+                  type='file'
+                  id='myFileInput'
+                  style={{ display: 'none' }}
+                  onChange={handleOnChange}
+                />
+                <Button
+                  onClick={() =>
+                    document.getElementById('myFileInput')?.click()
+                  }
+                >
+                  choose a file
+                </Button>
+                <Box
+                  borderWidth='4px'
+                  borderRadius='lg'
+                  padding={1}
+                  minWidth={200}
+                >
+                  <Text>{file?.name}</Text>
+                </Box>
+                <Fade in={!!file}>
+                  <Button onClick={submitHandler}>upload file</Button>
+                </Fade>
+              </Stack>
+            </Collapse>
+          )}
+
           <Box>
-            file
-            <input type='file' onChange={handleOnChange} />
-            <button onClick={submitHandler}>upload file</button>
             {cv && (
-              <div>
-                <p>summary</p>
-                <p>{cv?.summary}</p>
-                <p>skills</p>
-                <div>
-                  {cv.skills?.map((item) => (
-                    <p key={item}>{item}</p>
+              <Box>
+                <Heading>Results</Heading>
+                <Box>
+                  {Object.keys(cv).map((attribute) => (
+                    <Box>
+                      <Heading key={attribute}>{attribute}</Heading>
+                      <Stack spacing={2}>
+                        {cv[attribute].map((attr, i) => (
+                          <Box
+                            padding={2}
+                            paddingRight={10}
+                            borderWidth='4px'
+                            borderRadius='lg'
+                            position='relative'
+                          >
+                            <Text key={i}>{attr}</Text>
+                            <IconButton
+                              size='sm'
+                              aria-label='copy'
+                              onClick={() => {
+                                navigator.clipboard.writeText(attr)
+                              }}
+                              icon={<CopyIcon />}
+                              style={{
+                                position: 'absolute',
+                                top: '2px',
+                                right: '2px',
+                              }}
+                            />
+                          </Box>
+                        ))}
+                      </Stack>
+                    </Box>
                   ))}
-                </div>
-                <p>experience</p>
-                <div>
-                  {cv.experience?.map((item) => (
-                    <p key={item}>{item}</p>
-                  ))}
-                </div>
-              </div>
+                </Box>
+              </Box>
             )}
           </Box>
         </Box>
