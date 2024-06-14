@@ -36,7 +36,7 @@ function App() {
   const [form, setForm] = useState<QueryForm>({
     list: [],
     extract: [],
-    generate: [],
+    summarize: [],
   })
 
   const defaultAttribute = [
@@ -53,7 +53,7 @@ function App() {
       setAttributes: setExtractAttributes,
     },
     {
-      title: 'Generate',
+      title: 'Summarize',
       description: 'add attributes to generate summaries',
       attributes: ['skills', 'education', 'experience'],
       setAttributes: setgenerateAttributes,
@@ -93,7 +93,7 @@ function App() {
     setForm({
       list: listAttributes,
       extract: extractAttributes,
-      generate: generateAttributes,
+      summarize: generateAttributes,
     })
 
     setSelectedAttributes(true)
@@ -194,39 +194,41 @@ function App() {
             {cv && (
               <Box>
                 <Heading>Results</Heading>
-                <Box>
-                  {Object.keys(cv).map((attribute) => (
-                    <Box>
-                      <Heading key={attribute}>{attribute}</Heading>
-                      <Stack spacing={2}>
-                        {cv[attribute].map((attr, i) => (
-                          <Box
-                            padding={2}
-                            paddingRight={10}
-                            borderWidth='4px'
-                            borderRadius='lg'
-                            position='relative'
-                          >
-                            <Text key={i}>{attr}</Text>
-                            <IconButton
-                              size='sm'
-                              aria-label='copy'
-                              onClick={() => {
-                                navigator.clipboard.writeText(attr)
-                              }}
-                              icon={<CopyIcon />}
-                              style={{
-                                position: 'absolute',
-                                top: '2px',
-                                right: '2px',
-                              }}
-                            />
-                          </Box>
-                        ))}
-                      </Stack>
-                    </Box>
-                  ))}
-                </Box>
+                <Collapse in={cv}>
+                  <Box>
+                    {Object.keys(cv).map((attribute) => (
+                      <Box>
+                        <Heading key={attribute}>{attribute}</Heading>
+                        <Stack spacing={2}>
+                          {cv[attribute].map((attr, i) => (
+                            <Box
+                              padding={2}
+                              paddingRight={10}
+                              borderWidth='4px'
+                              borderRadius='lg'
+                              position='relative'
+                            >
+                              <Text key={i}>{attr}</Text>
+                              <IconButton
+                                size='sm'
+                                aria-label='copy'
+                                onClick={() => {
+                                  navigator.clipboard.writeText(attr)
+                                }}
+                                icon={<CopyIcon />}
+                                style={{
+                                  position: 'absolute',
+                                  top: '2px',
+                                  right: '2px',
+                                }}
+                              />
+                            </Box>
+                          ))}
+                        </Stack>
+                      </Box>
+                    ))}
+                  </Box>
+                </Collapse>
               </Box>
             )}
           </Box>

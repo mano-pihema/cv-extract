@@ -1,6 +1,6 @@
 export interface QueryForm {
   list: string[]
   extract: string[]
-  generate: string[]
+  summarize: string[]
   [attribute: string]: string[]
 }

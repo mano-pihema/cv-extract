@@ -30,9 +30,7 @@ async function main(schema) {
   const extractedData = await queryStructuredData(index, structuredQuery)
 
   for (const key in extractedData) {
-    if (Object.keys(extractedData).some((el) => el.startsWith('list'))) {
-      extractedData[key] = extractedData[key].split(',,')
-    }
+    extractedData[key] = extractedData[key].split(',,')
   }
 
   console.log(extractedData)
