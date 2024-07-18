@@ -10,7 +10,7 @@ CV Extractor uses LLamaIndex RAG to query your CV document with a set of query v
 ## Demo
 Here is a Demo of the App in action
 
-![screen-capture (5)](https://github.com/user-attachments/assets/ebce85c3-c98c-463d-a14e-2d09d197d34d)
+[screen-capture (5).webm](https://github.com/user-attachments/assets/ebce85c3-c98c-463d-a14e-2d09d197d34d)
 
 
 ## Set up
