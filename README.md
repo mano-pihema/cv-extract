@@ -5,7 +5,19 @@ CV Extractor uses LLamaIndex RAG to query your CV document with a set of query v
 - Upload a CV document
 - Query your document using the verbs and keywords.Keywords such as 'experience', 'education' and 'skills' are included   
 - For instance 'List Experience' will return a list of your work experiences
-- Each experience is its own card whose content can be copied 
+- Each experience is its own card whose content can be copied
+
+## Learning Goals
+
+The lifecycle of the App is as follows:
+- The user uploads CV, this document is passed to a supabase bucket.
+- The user defines the query they want to carry out.
+- Both the query and bucket Url is passed to the backend.
+- The cv is pulled down into the server in a temp file, where it is parsed from pdf to a txt file.
+- Once that is complete the server then uses LLamaIndex RAG to query the txt file.
+- This extracted data is then sent up to the client.
+
+The main goal was to learn more about RAG use and integration. Secondary goals included learning to store documents in a bucket instead of on the server and parsing pdf documents.    
 
 ## Demo
 Here is a Demo of the App in action
@@ -38,19 +50,6 @@ Here is a Demo of the App in action
     ```sh
    npm run dev
    ```
-
-## Learning Goals
-
-The lifecycle of the App is as follows:
-- The user uploads CV, this document is passed to a supabase bucket.
-- The user defines the query they want to carry out.
-- Both the query and bucket Url is passed to the backend.
-- The cv is pulled down into the server in a temp file, where it is parsed from pdf to a txt file.
-- Once that is complete the server then uses LLamaIndex RAG to query the txt file.
-- This extracted data is then sent up to the client.
-
-The main goal was to learn more about RAG use and integration. Secondary goals included learning to store documents in a bucket instead of on the server and parsing pdf documents.    
-
 ## Tech
 ![chakraui](https://img.shields.io/badge/chakraui-319795?style=for-the-badge&logo=chakraui&logoColor=white)
 ![react](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
